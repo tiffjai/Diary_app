@@ -1,126 +1,147 @@
 document.addEventListener('DOMContentLoaded', () => {
     const entryForm = document.getElementById('entry-form');
+    const viewEntriesButton = document.getElementById('view-entries-button');
     const searchForm = document.getElementById('search-form');
+    const updateForm = document.getElementById('update-form');
+    const deleteForm = document.getElementById('delete-form');
     const entriesList = document.getElementById('entries-list');
     const alerts = document.getElementById('alerts');
-    const submitButton = document.getElementById('submit-button');
 
-    let currentEntryId = null;
+    // Create entry
+    entryForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    // Handle Form Submission for Create, Update, and Delete
-    entryForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(entryForm);
-        const entryData = Object.fromEntries(data.entries());
+        const formData = new FormData(entryForm);
+        const data = Object.fromEntries(formData.entries());
 
-        if (currentEntryId) {
-            // Update Entry
-            try {
-                const response = await fetch(`/api/entries/${currentEntryId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(entryData),
-                });
-                if (response.ok) {
-                    showAlert('Entry updated successfully!', 'success');
-                } else {
-                    showAlert('Failed to update entry.', 'error');
-                }
-            } catch (error) {
-                console.error('Error updating entry:', error);
-                showAlert('Error updating entry.', 'error');
+        try {
+            const response = await fetch('/api/entries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                showAlert('Entry created successfully!', 'success');
+                entryForm.reset(); // Clear the form after submission
+            } else {
+                showAlert('Failed to create entry.', 'error');
             }
-        } else {
-            // Create Entry
-            try {
-                const response = await fetch('/api/entries', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(entryData),
-                });
-                if (response.ok) {
-                    showAlert('Entry created successfully!', 'success');
-                    entryForm.reset();
-                } else {
-                    showAlert('Failed to create entry.', 'error');
-                }
-            } catch (error) {
-                console.error('Error creating entry:', error);
-                showAlert('Error creating entry.', 'error');
-            }
+        } catch (error) {
+            showAlert('An error occurred.', 'error');
         }
     });
 
-    // Handle Search Entries Form Submission
-    searchForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(searchForm);
-        const queryParams = new URLSearchParams(Object.fromEntries(data.entries()));
-
+    // View entries
+    viewEntriesButton.addEventListener('click', async () => {
         try {
-            const response = await fetch(`/api/entries?${queryParams}`);
+            const response = await fetch('/api/entries');
             if (response.ok) {
                 const entries = await response.json();
-                entriesList.innerHTML = entries.map(entry => `
-                    <li>
-                        <strong>${new Date(entry.date).toLocaleString()}:</strong>
-                        ${entry.text} (${entry.category})
-                        <button onclick="editEntry(${entry.id})">Edit</button>
-                        <button onclick="deleteEntry(${entry.id})">Delete</button>
-                    </li>
-                `).join('');
+                displayEntries(entries);
             } else {
                 showAlert('Failed to fetch entries.', 'error');
             }
         } catch (error) {
-            console.error('Error fetching entries:', error);
-            showAlert('Error fetching entries.', 'error');
+            showAlert('An error occurred.', 'error');
         }
     });
 
-    // Edit Entry
-    window.editEntry = async (id) => {
+    // Search entries
+    searchForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(searchForm);
+        const data = Object.fromEntries(formData.entries());
+
         try {
-            const response = await fetch(`/api/entries/${id}`);
+            const response = await fetch('/api/entries/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
             if (response.ok) {
-                const entry = await response.json();
-                document.getElementById('entry-id').value = entry.id;
-                document.getElementById('date').value = new Date(entry.date).toISOString().slice(0, 16);
-                document.getElementById('text').value = entry.text;
-                document.getElementById('category').value = entry.category;
-                currentEntryId = entry.id;
-                submitButton.textContent = 'Update Entry';
+                const entries = await response.json();
+                displayEntries(entries);
             } else {
-                showAlert('Failed to fetch entry for editing.', 'error');
+                showAlert('Failed to search entries.', 'error');
             }
         } catch (error) {
-            console.error('Error fetching entry:', error);
-            showAlert('Error fetching entry for editing.', 'error');
+            showAlert('An error occurred.', 'error');
         }
-    };
+    });
 
-    // Delete Entry
-    window.deleteEntry = async (id) => {
+    // Update entry
+    updateForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(updateForm);
+        const data = Object.fromEntries(formData.entries());
+
         try {
-            const response = await fetch(`/api/entries/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/api/entries/${data.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: data.text })
+            });
+            if (response.ok) {
+                showAlert('Entry updated successfully!', 'success');
+                updateForm.reset(); // Clear the form after update
+            } else {
+                showAlert('Failed to update entry.', 'error');
+            }
+        } catch (error) {
+            showAlert('An error occurred.', 'error');
+        }
+    });
+
+    // Delete entry
+    deleteForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(deleteForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch(`/api/entries/${data.id}`, {
+                method: 'DELETE'
+            });
             if (response.ok) {
                 showAlert('Entry deleted successfully!', 'success');
-                searchForm.dispatchEvent(new Event('submit')); // Refresh list
+                deleteForm.reset(); // Clear the form after deletion
             } else {
                 showAlert('Failed to delete entry.', 'error');
             }
         } catch (error) {
-            console.error('Error deleting entry:', error);
-            showAlert('Error deleting entry.', 'error');
+            showAlert('An error occurred.', 'error');
         }
-    };
+    });
 
-    // Show Alert Message
+    // Display entries
+    function displayEntries(entries) {
+        entriesList.innerHTML = ''; // Clear existing entries
+        entries.forEach(entry => {
+            const li = document.createElement('li');
+            li.textContent = `ID: ${entry.id}, Date: ${entry.date}, Category: ${entry.category}, Text: ${entry.text}`;
+            entriesList.appendChild(li);
+        });
+    }
+
+    // Show alerts
     function showAlert(message, type) {
-        alerts.innerHTML = `<div class="alert ${type}">${message}</div>`;
+        const alert = document.createElement('div');
+        alert.className = `alert ${type}`;
+        alert.textContent = message;
+        alerts.innerHTML = ''; // Clear previous alerts
+        alerts.appendChild(alert);
         setTimeout(() => {
-            alerts.innerHTML = '';
-        }, 5000);
+            alerts.innerHTML = ''; // Remove alert after a while
+        }, 3000);
     }
 });
 

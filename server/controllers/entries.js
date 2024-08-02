@@ -13,8 +13,7 @@ exports.createEntry = async (req, res) => {
 
 exports.getAllEntries = async (req, res) => {
     try {
-        const { date, month, year, category } = req.query;
-        const entries = await Entry.findAll({ date, month, year, category });
+        const entries = await Entry.findAll();
         res.status(200).json(entries);
     } catch (error) {
         console.error('Error fetching entries:', error);
@@ -65,6 +64,17 @@ exports.deleteEntry = async (req, res) => {
         }
     } catch (error) {
         console.error('Error deleting entry:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+exports.searchEntries = async (req, res) => {
+    try {
+        const term = req.query.term;
+        const entries = await Entry.search(term);
+        res.status(200).json(entries);
+    } catch (error) {
+        console.error('Error searching entries:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };

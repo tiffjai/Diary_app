@@ -1,23 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const entriesController = require('../controllers/entries');
+const entryController = require('../controllers/entries');
 
-// Route to create a new entry
-router.post('/', entriesController.createEntry);
-
-// Route to get all entries with optional search parameters
-router.get('/', entriesController.getAllEntries);
-
-// Route to get an entry by ID
-router.get('/:id', entriesController.getEntryById);
-
-// Route to update an entry by ID
-router.put('/:id', entriesController.updateEntry);
-
-// Route to delete an entry by ID
-router.delete('/:id', entriesController.deleteEntry);
+router.post('/', entryController.createEntry);
+router.get('/', entryController.getAllEntries);
+router.get('/:id', entryController.getEntryById);
+router.put('/:id', entryController.updateEntry);
+router.delete('/:id', entryController.deleteEntry);
+router.get('/search', entryController.searchEntries);
 
 module.exports = router;
+
 
 
 

@@ -1,10 +1,10 @@
-const db = require('../db/connect');
+const db = require('../db/connect'); // Import the database connection
 
 class Entry {
     constructor({ id, user_id, date, text, category }) {
         this.id = id;
         this.user_id = user_id;
-        this.date = new Date(date); // Ensure date is a Date object
+        this.date = date;
         this.text = text;
         this.category = category;
     }
@@ -19,33 +19,12 @@ class Entry {
 
     static async findById(id) {
         const result = await db.query('SELECT * FROM entries WHERE id = $1', [id]);
-        return result.rows.length ? new Entry(result.rows[0]) : null;
+        if (result.rows.length === 0) return null;
+        return new Entry(result.rows[0]);
     }
 
-    static async findAll({ date, month, year, category }) {
-        let query = 'SELECT * FROM entries WHERE 1=1';
-        const params = [];
-
-        if (date) {
-            query += ' AND date::DATE = $1';
-            params.push(date);
-        }
-        if (month) {
-            query += ' AND EXTRACT(MONTH FROM date) = $2';
-            params.push(month);
-        }
-        if (year) {
-            query += ' AND EXTRACT(YEAR FROM date) = $3';
-            params.push(year);
-        }
-        if (category) {
-            query += ' AND category = $4';
-            params.push(category);
-        }
-
-        query += ' ORDER BY date DESC';
-
-        const result = await db.query(query, params);
+    static async findAll() {
+        const result = await db.query('SELECT * FROM entries ORDER BY date DESC');
         return result.rows.map(row => new Entry(row));
     }
 
@@ -59,6 +38,15 @@ class Entry {
 
     async delete() {
         await db.query('DELETE FROM entries WHERE id = $1', [this.id]);
+    }
+
+    static async search(term) {
+        const result = await db.query(
+            `SELECT * FROM entries
+             WHERE text ILIKE $1 OR category ILIKE $1`,
+            [`%${term}%`]
+        );
+        return result.rows.map(row => new Entry(row));
     }
 }
 

@@ -13,36 +13,73 @@
     <main>
         <div id="alerts"></div>
 
-        <!-- Unified Form for Create, Update, and Delete -->
-        <form id="entry-form">
-            <input type="hidden" id="entry-id" name="id">
-            
-            <label for="date">Date and Time:</label>
-            <input type="datetime-local" id="date" name="date">
+        <!-- Create Entry Container -->
+        <div class="container">
+            <h2>Create Entry</h2>
+            <form id="entry-form" class="form">
+                <input type="hidden" id="entry-id" name="id">
+                
+                <label for="date">Date and Time:</label>
+                <input type="datetime-local" id="date" name="date">
+                
+                <label for="text">Text:</label>
+                <textarea id="text" name="text" rows="4"></textarea>
+                
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category">
+                
+                <button type="submit" id="submit-button">Create Entry</button>
+            </form>
+        </div>
 
-            <label for="text">Text:</label>
-            <textarea id="text" name="text" rows="4"></textarea>
+        <!-- View Entries Container -->
+        <div class="container">
+            <h2>View Entries</h2>
+            <button id="view-entries-button">View Entries</button>
+            <ul id="entries-list"></ul>
+        </div>
 
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category">
+        <!-- Search Entries Container -->
+        <div class="container">
+            <h2>Search Entries</h2>
+            <form id="search-form" class="form">
+                <label for="search-date">Search Date:</label>
+                <input type="date" id="search-date" name="date">
+                
+                <label for="search-category">Search Category:</label>
+                <input type="text" id="search-category" name="category">
+                
+                <button type="submit">Search Entries</button>
+            </form>
+        </div>
 
-            <button type="submit" id="submit-button">Create Entry</button>
-        </form>
+        <!-- Update Entry Container -->
+        <div class="container">
+            <h2>Update Entry</h2>
+            <form id="update-form" class="form">
+                <label for="update-id">Entry ID:</label>
+                <input type="number" id="update-id" name="id">
+                
+                <label for="update-text">New Text:</label>
+                <textarea id="update-text" name="text" rows="4"></textarea>
+                
+                <button type="submit">Update Entry</button>
+            </form>
+        </div>
 
-        <!-- Search Entries Form -->
-        <form id="search-form">
-            <label for="search-date">Search Date:</label>
-            <input type="date" id="search-date" name="date">
-
-            <label for="search-category">Search Category:</label>
-            <input type="text" id="search-category" name="category">
-
-            <button type="submit">Search Entries</button>
-        </form>
-
-        <!-- List of Entries -->
-        <ul id="entries-list"></ul>
+        <!-- Delete Entry Container -->
+        <div class="container">
+            <h2>Delete Entry</h2>
+            <form id="delete-form" class="form">
+                <label for="delete-id">Entry ID:</label>
+                <input type="number" id="delete-id" name="id">
+                
+                <button type="submit">Delete Entry</button>
+            </form>
+        </div>
     </main>
     <script src="script.js"></script>
 </body>
 </html>
+
+

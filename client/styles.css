@@ -21,25 +21,55 @@ header h1 {
 
 /* Main Content */
 main {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background: #c1e4cd; /* White background for content */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
 }
 
+.container {
+    flex: 1 1 calc(20% - 20px); /* Make containers 20% of the width minus gap */
+    padding: 20px;
+    background: #f9f9f9; /* Light gray background for containers */
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    min-width: 200px; /* Set a minimum width to avoid overly small containers */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+}
+
+/* Form Styles */
 form {
-    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-form input, form textarea, form select, form button {
-    display: block;
-    width: calc(100% - 22px);
-    margin-bottom: 10px;
+form input, form textarea, form button {
+    width: 100%;
+    margin: 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+/* Adjust specific input types */
+form input[type="datetime-local"], form input[type="date"] {
+    text-align: center; /* Center the text inside the input fields */
+}
+
+form textarea {
+    resize: vertical; /* Allow vertical resizing only */
 }
 
 form button {
@@ -57,6 +87,7 @@ label {
     margin-bottom: 5px;
     display: block;
     font-weight: bold;
+    text-align: center; /* Center-align labels */
 }
 
 /* Entries List */
@@ -94,11 +125,18 @@ label {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-    main {
-        margin: 10px;
-        padding: 15px;
+@media (max-width: 800px) {
+    .container {
+        flex: 1 1 calc(50% - 20px); /* 2 containers per row on smaller screens */
     }
 }
+
+@media (max-width: 600px) {
+    .container {
+        flex: 1 1 calc(100% - 20px); /* 1 container per row on very small screens */
+    }
+}
+
+
 
 
