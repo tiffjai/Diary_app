@@ -1,0 +1,18 @@
+:root {
+    --pantone-purple: #9b5de5;  
+    --pantone-orange: #f15bb5;  
+}
+
+body {
+    background-color: var(--pantone-purple);
+    color: white;
+}
+
+.btn-primary, .btn-danger {
+    background-color: var(--pantone-orange);
+    border: none;
+}
+
+.navbar, footer {
+    background-color: var(--pantone-purple);
+}
