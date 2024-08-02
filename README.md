@@ -1,22 +1,27 @@
 # Diary App
 
-The Diary App is a web-based application that allows users to create, edit, and delete diary entries. Each entry can be categorized and searched by date or category.
+The Diary App is a web-based application that allows users to create, edit, and delete diary entries. Each entry can be categorized and searched by date or category, providing an intuitive way to manage personal notes and reflections.
 
 ## Features
 
-- Create new diary entries with date, text, and category.
-- Edit existing entries.
-- Delete unwanted entries.
-- Search entries by date or category.
-- Responsive design using Bootstrap.
+- **Create Entries:** Add new diary entries with a date, text, and category.
+- **Edit Entries:** Update existing entries to correct or improve content.
+- **Delete Entries:** Remove unwanted entries permanently.
+- **Search Functionality:** Search for entries by date or category to quickly find past notes.
+- **Responsive Design:** Built with Bootstrap for a seamless experience on all devices.
 
 ## Technologies Used
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- Bootstrap 5
-- Node.js (Backend API for handling entries)
+- **Frontend:**
+  - HTML5
+  - CSS3
+  - JavaScript (ES6)
+  - Bootstrap 5
+
+- **Backend:**
+  - Node.js
+  - Express.js
+  - PostgreSQL (pg package for database interaction)
 
 ## Installation
 
