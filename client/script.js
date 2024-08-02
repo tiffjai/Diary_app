@@ -56,12 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/entries/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+            const response = await fetch('/api/entries/search?' + new URLSearchParams(data).toString(), {
+                method: 'GET'
             });
             if (response.ok) {
                 const entries = await response.json();
@@ -144,4 +140,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 });
-

@@ -40,14 +40,21 @@ class Entry {
         await db.query('DELETE FROM entries WHERE id = $1', [this.id]);
     }
 
-    static async search(term) {
-        const result = await db.query(
-            `SELECT * FROM entries
-             WHERE text ILIKE $1 OR category ILIKE $1`,
-            [`%${term}%`]
-        );
+    static async search(date, category) {
+        let query = 'SELECT * FROM entries WHERE TRUE';
+        const values = [];
+        if (date) {
+            query += ' AND date::date = $1';
+            values.push(date);
+        }
+        if (category) {
+            query += ' AND category ILIKE $2';
+            values.push(`%${category}%`);
+        }
+        const result = await db.query(query, values);
         return result.rows.map(row => new Entry(row));
     }
 }
 
 module.exports = Entry;
+

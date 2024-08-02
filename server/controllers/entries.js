@@ -70,11 +70,12 @@ exports.deleteEntry = async (req, res) => {
 
 exports.searchEntries = async (req, res) => {
     try {
-        const term = req.query.term;
-        const entries = await Entry.search(term);
+        const { date, category } = req.query;
+        const entries = await Entry.search(date, category);
         res.status(200).json(entries);
     } catch (error) {
         console.error('Error searching entries:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
