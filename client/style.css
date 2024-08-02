@@ -16,3 +16,12 @@ body {
 .navbar, footer {
     background-color: var(--pantone-purple);
 }
+
+/* styles.css */
+footer {
+    background-color: #333; /* Change this to your preferred color */
+    color: #fff; /* Text color */
+    padding: 20px;
+    text-align: center;
+}
+
