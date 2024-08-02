@@ -5,7 +5,7 @@ const entriesController = require('../controllers/entries');
 // Route to create a new entry
 router.post('/', entriesController.createEntry);
 
-// Route to get all entries
+// Route to get all entries with optional search parameters
 router.get('/', entriesController.getAllEntries);
 
 // Route to get an entry by ID
@@ -18,5 +18,6 @@ router.put('/:id', entriesController.updateEntry);
 router.delete('/:id', entriesController.deleteEntry);
 
 module.exports = router;
+
 
 

@@ -13,7 +13,8 @@ exports.createEntry = async (req, res) => {
 
 exports.getAllEntries = async (req, res) => {
     try {
-        const entries = await Entry.findAll();
+        const { date, month, year, category } = req.query;
+        const entries = await Entry.findAll({ date, month, year, category });
         res.status(200).json(entries);
     } catch (error) {
         console.error('Error fetching entries:', error);

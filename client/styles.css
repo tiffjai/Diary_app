@@ -1,0 +1,104 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #edf2f2;
+    color: #333; /* Text color */
+}
+
+header {
+    background: #77927d; /* Blue background */
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* Main Content */
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #c1e4cd; /* White background for content */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form input, form textarea, form select, form button {
+    display: block;
+    width: calc(100% - 22px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    background: #77927d; /* Green background */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #d3394e; /* Darker green on hover */
+}
+
+label {
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+
+/* Entries List */
+#entries-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#entries-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 5px;
+    background: #f9f9f9; /* Light gray background for list items */
+    border-radius: 5px;
+}
+
+#entries-list li:last-child {
+    border-bottom: none;
+}
+
+/* Alerts */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.alert.success {
+    background-color: #77927d; /* Green for success */
+}
+
+.alert.error {
+    background-color: #e42743; /* Red for errors */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    main {
+        margin: 10px;
+        padding: 15px;
+    }
+}
+
+
